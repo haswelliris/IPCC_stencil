@@ -26,6 +26,8 @@ int main(int argc, char** argv) {
   ImageClass<P> img_in (argv[1]);
   ImageClass<P> img_out(img_in.width, img_in.height);
   
+
+  // img_in.WriteToFile("test.png");
   nTrials = 10;
 
   printf("\n\033[1mEdge detection with a 3x3 stencil\033[0m\n");
