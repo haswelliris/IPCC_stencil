@@ -11,6 +11,8 @@
 #define BATCH_GAP 6 // 读6行算4行
 #define SIMD_LANE 8
 
+#include "kernel_r6c4_avx2.h"
+
 // 按照行划分任务
 // factor是划分最小粒度
 inline void distribute_row(const int nthreads, const int tid, const int width, const int height, const int factor, int &size, int &start)
@@ -36,9 +38,31 @@ inline void distribute_row(const int nthreads, const int tid, const int width, c
     }
 }
 
+inline void ApplyStencil_simd_avx2_float(float *in, float *out, int width, int height)
+{
+    // omp_set_num_threads(NTHREADS);
+
+    int tid, m_omp, ms_omp;
+#pragma omp parallel num_threads(NTHREADS) default(shared) private(tid, m_omp, ms_omp)
+    {
+        tid = omp_get_thread_num();
+        // thread affinity
+        cpu_set_t mask;
+        CPU_ZERO(&mask);
+        CPU_SET(tid, &mask);
+        if (pthread_setaffinity_np(pthread_self(), sizeof(mask), &mask) != 0)
+        {
+            fprintf(stderr, "set thread affinity failed\n");
+        }
+        // 按照行划分任务
+        distribute_row(NTHREADS, tid, width, height, BATCH_SIZE, m_omp, ms_omp);
+        // 调用计算核心
+        kernel_read6_compute4_avx256_float(in, out,  width,  height,  tid,  m_omp,  ms_omp);
+    }
+}
 inline void ApplyStencil_avx256_float(float *in, float *out, int width, int height)
 {
-    omp_set_num_threads(NTHREADS);
+    // omp_set_num_threads(NTHREADS);
 
     int tid, m_omp, ms_omp;
 #pragma omp parallel num_threads(NTHREADS) default(shared) private(tid, m_omp, ms_omp)
