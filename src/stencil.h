@@ -7,4 +7,6 @@
 template<typename P>
 void ApplyStencil(ImageClass<P> & img_in, ImageClass<P> & img_out);
 
+void ApplyStencil_worker();
+
 #endif
