@@ -1,0 +1,25 @@
+build...
+g++ -Iinclude/ -fopenmp -Ofast -mavx2 -mfma -g -o bin/stencil src/main.o src/image.o src/stencil.o lib/libpng16.a lib/libz.a
+
+running...
+
+[1mEdge detection with a 3x3 stencil[0m
+
+Image size: 10410 x 5905
+
+[1mTrial        Time, ms 
+    1           2.385 
+    2           1.526 
+    3           1.491 
+    4           1.480 
+    5           1.495 
+    6           1.485 
+    7           1.493 
+    8           1.484 
+    9           1.486 
+   10           1.481 
+-----------------------------------------------------
+Total :       15.8 ms
+-----------------------------------------------------
+
+Output written into data.txt and output.png
