@@ -9,6 +9,8 @@ void ApplyStencil(ImageClass<P> & img_in, ImageClass<P> & img_out) {
 
   P * in  = img_in.pixel;
   P * out = img_out.pixel;
+  // ApplyStencil_simd_avx2_float(in, out, width, height);
+  // 不用simd
   ApplyStencil_avx256_float(in, out, width, height);
 
 }

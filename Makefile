@@ -1,5 +1,6 @@
-CXX=g++
-CXXFLAGS=-Iinclude/ -O4 -mavx2
+CXX=icpc
+CXXFLAGS=-Iinclude/ -std=c++11 -no-gcc -O3 -ipo -qopenmp -fp-model fast=2 -xHost
+CFLAGS += -xCORE-AVX2
 LDFLAGS=lib/libpng16.a lib/libz.a
 
 OBJECTS=src/main.o src/image.o src/stencil.o

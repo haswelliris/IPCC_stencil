@@ -11,7 +11,13 @@
 #define BATCH_GAP 6 // 读6行算4行
 #define SIMD_LANE 8
 
-#include "kernel_r6c4_avx2.h"
+#define USING_PREFETCH
+#ifdef USING_PREFETCH
+    #include "kernel_r6c4_avx2_prefetch.h"
+#else
+    #include "kernel_r6c4_avx2.h"
+#endif
+
 
 // 按照行划分任务
 // factor是划分最小粒度
@@ -78,6 +84,7 @@ inline void ApplyStencil_avx256_float(float *in, float *out, int width, int heig
         }
         // 按照行划分任务
         distribute_row(NTHREADS, tid, width, height, BATCH_SIZE, m_omp, ms_omp);
+        
         // m_omp 任务长度， os_omp，任务开始位置
         // 开始计算
         float *dat_1_1, *dat_1_2, *dat_1_3;
