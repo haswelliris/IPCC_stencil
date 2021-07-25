@@ -1,16 +1,20 @@
 #include "image.h"
+#include <sys/mman.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 template<typename P>
 ImageClass<P>::ImageClass(int const _width, int const _height) 
   : width(_width), height(_height) {
 
   // Initialize a blank image
+  //pixel = (P*)malloc(sizeof(P)*width*height);
+  pixel = (P*)mmap(NULL, sizeof(P)*width*height, PROT_READ | PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE  , -1, 0);
 
-  pixel = (P*)malloc(sizeof(P)*width*height);
-
-  for (int j = 0; j < width; j++)
-    for (int i = 0; i < height; i++)
-      pixel[i*width + j] = (P)0;
+#pragma omp parallel for
+  for (int i = 0; i < height * width; i++)
+    pixel[i] = (P)0;
 }
 
 
@@ -63,11 +67,13 @@ ImageClass<P>::ImageClass(char const * file_name) {
   fclose(fp);
 
   // Convert from png_bytep to P
-  pixel = (P*)malloc(sizeof(P)*width*height);
+  //pixel = (P*)malloc(sizeof(P)*width*height);
+  pixel = (P*)mmap(NULL, sizeof(P)*width*height, PROT_READ | PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE  , -1, 0);
 
-  for(int j = 0; j < width; j++)
-     for(int i = 0; i < height; i++) 
-	pixel[i*width+j] = (P) row[i][j];
+#pragma omp parallel for
+  for(int i = 0; i < height; i++)
+    for(int j = 0; j < width; j++)
+	    pixel[i*width+j] = (P) row[i][j];
 
   for (int i = 0; i < height; i++)
     free(row[i]);
@@ -77,7 +83,8 @@ ImageClass<P>::ImageClass(char const * file_name) {
 template<typename P>
 ImageClass<P>::~ImageClass() {
   // Deallocate image
-  free(pixel);
+  //free(pixel);
+  munmap(pixel, sizeof(P)*width*height);
 }
 
 

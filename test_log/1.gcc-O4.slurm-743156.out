@@ -1,0 +1,28 @@
+build...
+g++ -Iinclude/ -O4 -mavx2   -c -o src/main.o src/main.cc
+g++ -Iinclude/ -O4 -mavx2   -c -o src/image.o src/image.cc
+g++ -Iinclude/ -O4 -mavx2   -c -o src/stencil.o src/stencil.cc
+g++ -Iinclude/ -O4 -mavx2  -o bin/stencil src/main.o src/image.o src/stencil.o lib/libpng16.a lib/libz.a
+
+running...
+
+[1mEdge detection with a 3x3 stencil[0m
+
+Image size: 10410 x 5905
+
+[1mTrial        Time, ms 
+    1         473.202 
+    2         489.708 
+    3         465.196 
+    4         471.456 
+    5         491.073 
+    6         464.692 
+    7         464.719 
+    8         464.853 
+    9         473.936 
+   10         487.710 
+-----------------------------------------------------
+Total :     4746.5 ms
+-----------------------------------------------------
+
+Output written into data.txt and output.png

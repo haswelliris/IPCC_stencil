@@ -1,0 +1,25 @@
+build...
+icpc -Iinclude/ -std=c++11 -no-gcc -O3 -ipo -qopenmp -fp-model fast=2 -xHost  -o bin/stencil src/main.o src/image.o src/stencil.o lib/libpng16.a lib/libz.a
+
+running...
+
+[1mEdge detection with a 3x3 stencil[0m
+
+Image size: 10410 x 5905
+
+[1mTrial        Time, ms 
+    1          22.260 
+    2           6.660 
+    3           6.756 
+    4           6.796 
+    5           6.771 
+    6           6.784 
+    7           6.791 
+    8           6.774 
+    9           6.772 
+   10           6.787 
+-----------------------------------------------------
+Total :       83.2 ms
+-----------------------------------------------------
+
+Output written into data.txt and output.png

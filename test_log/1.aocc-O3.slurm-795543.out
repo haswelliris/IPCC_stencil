@@ -1,0 +1,25 @@
+build...
+clang -lstdc++ -Iinclude/ -O3 -flto -mavx2  -o bin/stencil src/main.o src/image.o src/stencil.o -lm lib/libpng16.a lib/libz.a
+
+running...
+
+[1mEdge detection with a 3x3 stencil[0m
+
+Image size: 10410 x 5905
+
+[1mTrial        Time, ms 
+    1         485.001 
+    2         485.784 
+    3         454.041 
+    4         454.511 
+    5         454.642 
+    6         454.511 
+    7         485.902 
+    8         454.495 
+    9         454.139 
+   10         454.753 
+-----------------------------------------------------
+Total :     4637.8 ms
+-----------------------------------------------------
+
+Output written into data.txt and output.png

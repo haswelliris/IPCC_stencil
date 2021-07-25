@@ -1,4 +1,6 @@
+
 check.txt
+
 # Prerequisites
 *.d
 
@@ -24,10 +26,11 @@ check.txt
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+# *.a
 *.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
